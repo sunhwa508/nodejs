@@ -8,6 +8,7 @@
 //     console.log(data.toString());
 // });
 
+// 버퍼방식
 const fs = require('fs').promises;
 
 fs.readFile('./readme.txt')
