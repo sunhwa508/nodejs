@@ -10,6 +10,9 @@ app.set("port", process.env.PORT || 3000);
 app.use(cookieParser("password"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//app.use("요청 경로", express.static(path.join(__dirname, "실제경로")));
+// 정적파일들의 경로를 숨겨 보안에 유리하다.
+app.use("/", express.static(path.join(__dirname, "public")));
 // 개발할때 많이 사용
 app.use(morgan("dev"));
 // 배포용으로 사용 (더 상세함)

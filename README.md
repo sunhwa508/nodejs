@@ -241,3 +241,17 @@ app.get("/", (req, res) => {
  res.sendFile(path.join(__dirname, "index.html"));
 });
 ```
+
+## static 미들웨어
+
+> 정적파일들의 경로를 숨겨 보안에 유리하다.
+> 요청경로와 실제경로가 다르다.
+> 서버 구조를 전혀 예측할 수 없게 한다.
+
+```javascript
+// app.use("요청 경로", express.static(path.join(__dirname, "실제경로")));
+app.use("/", express.static(path.join(__dirname, "public")));
+```
+
+localhost:3000/zerocho.html 을 요청했다면 <br>
+실제로 우리의 파일 경로는 learn-express/public/zerocho.html
