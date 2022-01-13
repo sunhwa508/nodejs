@@ -1,10 +1,19 @@
 // http를 사용하고 있는 express
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 
+const morgan = require("morgan");
 //전역변수 port 를 설정하는 느낌
 app.set("port", process.env.PORT || 3000);
+app.use(cookieParser("password"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// 개발할때 많이 사용
+app.use(morgan("dev"));
+// 배포용으로 사용 (더 상세함)
+// app.use(morgan("combined"));
 
 // app.use => 모든 코드에서 실행된다.
 app.use((req, res, next) => {
@@ -15,6 +24,19 @@ app.use((req, res, next) => {
 //app.get("/" 과 같이 메서드 + 주소 => 라우터 라고 부른다.
 //한 라우터에서 여러개의 send 를 보내면 오류
 app.get("/", (req, res) => {
+ req.cookies; // {mycookie: "test"}
+ // 서명화된 쿠키 불러올때
+ req.signedCookies;
+ //  'Set-Cookie': `name=${encodeURIComponent(name)}; Expires=${expires.toGMTString()}; HttpOnly; Path=/`,
+ res.cookie("name", encodeURIComponent(name), {
+  expires: new Date(),
+  httpOnly: true,
+  path: "/",
+ });
+ res.clearCookie("name", encodeURIComponent(name), {
+  httpOnly: true,
+  path: "/",
+ });
  // 가져올때 html 파일이 변경되었는지 확인한다.
  res.sendFile(path.join(__dirname, "./index.html"));
  //  res.send("안녕하세여");
@@ -58,7 +80,7 @@ app.get("*", (req, res) => {
 // 반드시 4가지 매개변수를 다 써야한다.
 app.use((err, req, res, next) => {
  console.error(err);
- res.send("에러났지만 안알려줌");
+ res.status(404).send("에러났지만 안알려줌");
 });
 
 app.listen(app.get("port"), () => {

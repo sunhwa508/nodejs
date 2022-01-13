@@ -173,3 +173,71 @@ app.get("/about", (req, res) => {
  res.sendFile(path.join(__dirname, "./index.html"));
 });
 ```
+
+## morgan, bodyparser, cookie-parser
+
+bodyparser 은 더이상 사용하지 않는다.
+
+> 요청과 응답을 기록하는 라우터
+
+```javascript
+const morgan = require("morgan");
+
+app.use(morgan("dev"));
+```
+
+```javascript
+const cookieParser = require("cookie-parser");
+
+app.use(cookieParser("password"));
+
+app.get("/", (req, res) => {
+ req.cookies; // {mycookie: "test"}
+ // 서명화된 쿠키 불러올때(cookieParser에 비밀번호를 넣은 경우)
+ req.signedCookies;
+ res.cookie("name", encodeURIComponent(name), {
+  expires: new Date(),
+  httpOnly: true,
+  path: "/",
+ });
+ res.clearCookie("name", encodeURIComponent(name), {
+  httpOnly: true,
+  path: "/",
+ });
+});
+```
+
+## express.json() unrlencoded() 를 사용하면
+
+```javascript
+// before
+let body = "";
+// 요청의 body를 stream 형식으로 받음
+req.on("data", data => {
+ body += data;
+});
+// 요청의 body를 다 받은 후 실행됨
+return req.on("end", () => {
+ console.log("POST 본문(Body):", body);
+ const { name } = JSON.parse(body);
+ const id = Date.now();
+ users[id] = name;
+ res.writeHead(201, { "Content-Type": "text/plain; charset=utf-8" });
+ res.end("ok");
+});
+```
+
+```javascript
+//after
+//body parser가 express안으로 들어가 아래와 같이 사용된다.
+app.use(express.json());
+
+//클라이언트에서 form submit 할때
+app.use(express.urlencoded({ extended: true }));
+// true면 qs, false 면 querystring
+
+app.get("/", (req, res) => {
+ req.body.name;
+ res.sendFile(path.join(__dirname, "index.html"));
+});
+```
