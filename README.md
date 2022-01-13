@@ -20,7 +20,7 @@ patch는 마이너한 버그 수정시 사용됨
 `~ 2.3.51` = 두번째 자리 고정<br>
 아무것도 쓰지 않는 경우 = 고정 하지 않음<br>
 
-`npm ourdated` 어떤 패키지에 기능 변화가 생겼는지 알 수 있음
+`npm outdated` 어떤 패키지에 기능 변화가 생겼는지 알 수 있음
 
 ### npm ls inherits
 
@@ -118,7 +118,7 @@ app.listen(app.get("port"), () => {
 });
 ```
 
-### http VS express
+## http VS express
 
 ```javascript
 //http
@@ -132,5 +132,44 @@ if (req.method === "GET") {
 app.get("/about", (req, res) => {
  res.setHeader("Content-Type", "text/html");
  res.send("hello express");
+});
+```
+
+```javascript
+//http
+if (req.method === "GET") {
+ if (req.url === "/about") {
+  res.writeHead(200, { "Content-Type": "application/json" });
+  return res.end(JSON.stringify({ hello: "hello express" }));
+ }
+}
+//express
+app.get("/about", (req, res) => {
+ res.json({ hello: "hello express" });
+});
+```
+
+## next("route") 분기처리 (중복을 줄일 수 있다)
+
+```javascript
+app.get(
+ "/about",
+ (req, res, next) => {
+  res.sendFile(path.join(__dirname, "./index.html"));
+
+  if (true) {
+   // 바로 아래가 실행되지 않고 다음 라우터가 실행된다.
+   next("route");
+  } else {
+   next();
+  }
+ },
+ (req, res) => {
+  console.log("실행 되나요?!");
+ },
+);
+app.get("/about", (req, res) => {
+ console.log("실행 되지롱");
+ res.sendFile(path.join(__dirname, "./index.html"));
 });
 ```
