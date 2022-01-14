@@ -176,7 +176,13 @@ app.get("/about", (req, res) => {
 
 ## morgan, bodyparser, cookie-parser
 
-bodyparser 은 더이상 사용하지 않는다.
+morgan : 서버로 들어온 요청과 응답을 기록해주는 미들웨어<br>
+body-parser : 요청의 본문을 해석해주는 미들웨어<br>
+
+- 폼 데이터나 AJAX 요청의 데이터 처리<br>
+  cookie-parser : 요청 헤더의 쿠키를 해석해주는 미들웨어<br>
+
+bodyparser 은 더이상 사용하지 않는다. (express 에서 가져와서 사용)
 
 > 요청과 응답을 기록하는 라우터
 
@@ -255,3 +261,33 @@ app.use("/", express.static(path.join(__dirname, "public")));
 
 localhost:3000/zerocho.html 을 요청했다면 <br>
 실제로 우리의 파일 경로는 learn-express/public/zerocho.html
+
+## express-session 미들웨어
+
+// 서명돼서 읽을수 없는 문자열로 반환됨
+
+```javascript
+app.use(
+ session({
+  resave: false,
+  saveUninitialized: false,
+  secret: "password",
+  cookie: {
+   // 자바스크립트로 부터 공격을 안당하기 위해
+   httpOnly: true,
+  },
+ }),
+);
+```
+
+## 미들웨어들 간 데이터 전송
+
+```javascript
+app.use("/", (req, res) => {
+ req.data = "my_password";
+});
+
+app.get("/", (req, res, next) => {
+ req.data; // my_password
+});
+```

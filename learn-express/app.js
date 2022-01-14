@@ -3,13 +3,27 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
+const session = require("express-session");
 
 const morgan = require("morgan");
 //전역변수 port 를 설정하는 느낌
 app.set("port", process.env.PORT || 3000);
 app.use(cookieParser("password"));
+// 서명돼서 읽을수 없는 문자열로 반환됨
+app.use(
+ session({
+  resave: false,
+  saveUninitialized: false,
+  secret: "password",
+  cookie: {
+   // 자바스크립트로 부터 공격을 안당하기 위해
+   httpOnly: true,
+  },
+ }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 //app.use("요청 경로", express.static(path.join(__dirname, "실제경로")));
 // 정적파일들의 경로를 숨겨 보안에 유리하다.
 app.use("/", express.static(path.join(__dirname, "public")));
@@ -36,6 +50,7 @@ app.get("/", (req, res) => {
   httpOnly: true,
   path: "/",
  });
+
  res.clearCookie("name", encodeURIComponent(name), {
   httpOnly: true,
   path: "/",
