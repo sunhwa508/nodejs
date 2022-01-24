@@ -3,6 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
+// 요청마다 개인의 저장 공간을 만들어 주는 것 -> express session
 const session = require("express-session");
 
 const morgan = require("morgan");
