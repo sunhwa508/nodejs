@@ -1,20 +1,22 @@
 // http를 사용하고 있는 express
+const dotenv = require("dotenv");
 const express = require("express");
+dotenv.config();
 const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const morgan = require("morgan");
 const path = require("path");
 const app = express();
 // 요청마다 개인의 저장 공간을 만들어 주는 것 -> express session
-const session = require("express-session");
-const morgan = require("morgan");
 //전역변수 port 를 설정하는 느낌
 app.set("port", process.env.PORT || 3000);
-app.use(cookieParser("password"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 // 서명돼서 읽을수 없는 문자열로 반환됨
 app.use(
   session({
     resave: false,
     saveUninitialized: false,
-    secret: "password",
+    secret: process.env.COOKIE_SECRET,
     cookie: {
       // 자바스크립트로 부터 공격을 안당하기 위해
       httpOnly: true,
