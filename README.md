@@ -39,36 +39,36 @@ app.set("port", process.env.PORT || 3000);
 
 // app.use => 모든 코드에서 실행된다.
 app.use((req, res, next) => {
- console.log("모든 요청에 실행하고싶어요");
- // next() 를 써 줘야 다음코드로 넘어가 실행된다.
- next();
+  console.log("모든 요청에 실행하고싶어요");
+  // next() 를 써 줘야 다음코드로 넘어가 실행된다.
+  next();
 });
 
 //app.get("/" 과 같이 메서드 + 주소 => 라우터 라고 부른다.
 app.get("/", (req, res) => {
- // 가져올때 html 파일이 변경되었는지 확인한다.
- res.sendFile(path.join(__dirname, "./index.html"));
+  // 가져올때 html 파일이 변경되었는지 확인한다.
+  res.sendFile(path.join(__dirname, "./index.html"));
 });
 app.post("/", (req, res) => {
- res.send("hello express");
+  res.send("hello express");
 });
 app.get("/about", (req, res) => {
- res.send("hello express");
+  res.send("hello express");
 });
 app.listen(app.get("port"), () => {
- console.log("익스프레스 서버 실행");
+  console.log("익스프레스 서버 실행");
 });
 
 // 와일드카드 = 항상 다른 라우터 아래에 위치해야한다.
 app.get("/:name", (req, res) => {
- // 가져올때 html 파일이 변경되었는지 확인한다.
- res.send(`hello ${req.params.name}`);
+  // 가져올때 html 파일이 변경되었는지 확인한다.
+  res.send(`hello ${req.params.name}`);
 });
 
 // 모든 get 요청에 대해 다 처리하겠다.
 app.get("*", (req, res) => {
- // 가져올때 html 파일이 변경되었는지 확인한다.
- res.send(`hello All`);
+  // 가져올때 html 파일이 변경되었는지 확인한다.
+  res.send(`hello All`);
 });
 ```
 
@@ -80,19 +80,19 @@ app.get("*", (req, res) => {
 
 ```javascript
 app.use(
- (req, res, next) => {
-  console.log("1 모든 요청에 실행하고싶어요");
-  // next() 를 써 줘야 다음코드로 넘어가 실행된다.
-  next();
- },
- (req, res, next) => {
-  console.log("2 모든 요청에 실행하고싶어요");
-  next();
- },
- (req, res, next) => {
-  console.log("3 모든 요청에 실행하고싶어요");
-  next();
- },
+  (req, res, next) => {
+    console.log("1 모든 요청에 실행하고싶어요");
+    // next() 를 써 줘야 다음코드로 넘어가 실행된다.
+    next();
+  },
+  (req, res, next) => {
+    console.log("2 모든 요청에 실행하고싶어요");
+    next();
+  },
+  (req, res, next) => {
+    console.log("3 모든 요청에 실행하고싶어요");
+    next();
+  },
 );
 ```
 
@@ -100,7 +100,7 @@ app.use(
 
 ```javascript
 app.post("/", (req, res) => {
- res.status(200).send("hello express");
+  res.status(200).send("hello express");
 });
 ```
 
@@ -109,12 +109,12 @@ app.post("/", (req, res) => {
 ```javascript
 // 반드시 4가지 매개변수를 다 써야한다.
 app.use((err, req, res, next) => {
- console.error(err);
- res.send("에러났지만 안알려줌");
+  console.error(err);
+  res.send("에러났지만 안알려줌");
 });
 
 app.listen(app.get("port"), () => {
- console.log("익스프레스 서버 실행");
+  console.log("익스프레스 서버 실행");
 });
 ```
 
@@ -123,29 +123,29 @@ app.listen(app.get("port"), () => {
 ```javascript
 //http
 if (req.method === "GET") {
- if (req.url === "/about") {
-  res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-  return res.end("hello express");
- }
+  if (req.url === "/about") {
+    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    return res.end("hello express");
+  }
 }
 //express
 app.get("/about", (req, res) => {
- res.setHeader("Content-Type", "text/html");
- res.send("hello express");
+  res.setHeader("Content-Type", "text/html");
+  res.send("hello express");
 });
 ```
 
 ```javascript
 //http
 if (req.method === "GET") {
- if (req.url === "/about") {
-  res.writeHead(200, { "Content-Type": "application/json" });
-  return res.end(JSON.stringify({ hello: "hello express" }));
- }
+  if (req.url === "/about") {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    return res.end(JSON.stringify({ hello: "hello express" }));
+  }
 }
 //express
 app.get("/about", (req, res) => {
- res.json({ hello: "hello express" });
+  res.json({ hello: "hello express" });
 });
 ```
 
@@ -153,24 +153,24 @@ app.get("/about", (req, res) => {
 
 ```javascript
 app.get(
- "/about",
- (req, res, next) => {
-  res.sendFile(path.join(__dirname, "./index.html"));
+  "/about",
+  (req, res, next) => {
+    res.sendFile(path.join(__dirname, "./index.html"));
 
-  if (true) {
-   // 바로 아래가 실행되지 않고 다음 라우터가 실행된다.
-   next("route");
-  } else {
-   next();
-  }
- },
- (req, res) => {
-  console.log("실행 되나요?!");
- },
+    if (true) {
+      // 바로 아래가 실행되지 않고 다음 라우터가 실행된다.
+      next("route");
+    } else {
+      next();
+    }
+  },
+  (req, res) => {
+    console.log("실행 되나요?!");
+  },
 );
 app.get("/about", (req, res) => {
- console.log("실행 되지롱");
- res.sendFile(path.join(__dirname, "./index.html"));
+  console.log("실행 되지롱");
+  res.sendFile(path.join(__dirname, "./index.html"));
 });
 ```
 
@@ -198,18 +198,18 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser("password"));
 
 app.get("/", (req, res) => {
- req.cookies; // {mycookie: "test"}
- // 서명화된 쿠키 불러올때(cookieParser에 비밀번호를 넣은 경우)
- req.signedCookies;
- res.cookie("name", encodeURIComponent(name), {
-  expires: new Date(),
-  httpOnly: true,
-  path: "/",
- });
- res.clearCookie("name", encodeURIComponent(name), {
-  httpOnly: true,
-  path: "/",
- });
+  req.cookies; // {mycookie: "test"}
+  // 서명화된 쿠키 불러올때(cookieParser에 비밀번호를 넣은 경우)
+  req.signedCookies;
+  res.cookie("name", encodeURIComponent(name), {
+    expires: new Date(),
+    httpOnly: true,
+    path: "/",
+  });
+  res.clearCookie("name", encodeURIComponent(name), {
+    httpOnly: true,
+    path: "/",
+  });
 });
 ```
 
@@ -220,16 +220,16 @@ app.get("/", (req, res) => {
 let body = "";
 // 요청의 body를 stream 형식으로 받음
 req.on("data", data => {
- body += data;
+  body += data;
 });
 // 요청의 body를 다 받은 후 실행됨
 return req.on("end", () => {
- console.log("POST 본문(Body):", body);
- const { name } = JSON.parse(body);
- const id = Date.now();
- users[id] = name;
- res.writeHead(201, { "Content-Type": "text/plain; charset=utf-8" });
- res.end("ok");
+  console.log("POST 본문(Body):", body);
+  const { name } = JSON.parse(body);
+  const id = Date.now();
+  users[id] = name;
+  res.writeHead(201, { "Content-Type": "text/plain; charset=utf-8" });
+  res.end("ok");
 });
 ```
 
@@ -243,8 +243,8 @@ app.use(express.urlencoded({ extended: true }));
 // true면 qs, false 면 querystring
 
 app.get("/", (req, res) => {
- req.body.name;
- res.sendFile(path.join(__dirname, "index.html"));
+  req.body.name;
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 ```
 
@@ -268,15 +268,15 @@ localhost:3000/zerocho.html 을 요청했다면 <br>
 
 ```javascript
 app.use(
- session({
-  resave: false,
-  saveUninitialized: false,
-  secret: "password",
-  cookie: {
-   // 자바스크립트로 부터 공격을 안당하기 위해
-   httpOnly: true,
-  },
- }),
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: "password",
+    cookie: {
+      // 자바스크립트로 부터 공격을 안당하기 위해
+      httpOnly: true,
+    },
+  }),
 );
 ```
 
@@ -284,10 +284,17 @@ app.use(
 
 ```javascript
 app.use("/", (req, res) => {
- req.data = "my_password";
+  req.data = "my_password";
 });
 
 app.get("/", (req, res, next) => {
- req.data; // my_password
+  req.data; // my_password
 });
 ```
+
+## multer
+
+form태그의 enctype이 multipart/form-data인 경우
+
+- body-parser로는 요청 본문을 해석 할 수 없음
+- multer 패키지 필요!
