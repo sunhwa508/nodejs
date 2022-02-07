@@ -6,7 +6,15 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const morgan = require("morgan");
 const path = require("path");
+
+const indexRouter = require("./routes");
+const userRouter = require("./routes/user");
+
 const app = express();
+
+app.use("/", indexRouter);
+app.use("/user", userRouter);
+
 // 요청마다 개인의 저장 공간을 만들어 주는 것 -> express session
 //전역변수 port 를 설정하는 느낌
 app.set("port", process.env.PORT || 3000);
