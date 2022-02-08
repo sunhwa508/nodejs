@@ -298,3 +298,47 @@ form태그의 enctype이 multipart/form-data인 경우
 
 - body-parser로는 요청 본문을 해석 할 수 없음
 - multer 패키지 필요!
+
+# PUG
+
+템플릿 엔진
+
+### Pug 설정
+
+```javascript
+const app = express();
+app.set("port", process.env.PORT || 3000);
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug"); // 확장자 지정
+```
+
+> ex) 사용 예
+
+![image](https://user-images.githubusercontent.com/61695175/152937626-52c33b54-5a70-4c44-94fd-616edd16baf4.png)
+
+# Nunjucks(넌적스)
+
+## Numjucks 설정하기
+
+`$ npm i numjucks`
+
+```javascript
+const path = require("path");
+const nunjucks = require("nunjucks");
+
+const app = express();
+app.set("port", process.env.PORT || 3000);
+
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "html"); // 확장자 지정
+
+nunjucks.configure("views", {
+  express: app,
+  watch: true,
+});
+```
+
+> ex) 사용 예
+
+![image](https://user-images.githubusercontent.com/61695175/152938847-409f5286-b313-4612-83d2-a711f47db5c2.png)
