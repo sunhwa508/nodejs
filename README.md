@@ -342,3 +342,11 @@ nunjucks.configure("views", {
 > ex) 사용 예
 
 ![image](https://user-images.githubusercontent.com/61695175/152938847-409f5286-b313-4612-83d2-a711f47db5c2.png)
+
+# 데이터 베이스
+
+### MySQL 시작하기
+
+클라이언트에 데이터 보관하기 -> 클라이언트가 데이터를 위조하는 순간 서버는 그 데이터의 진위여부를 판단 할 수 없다.
+보안체크가 필요한 경우 서버에 관리한다.
+DBMS: 데이터베이스를 관리하는 시스템
